@@ -4,14 +4,18 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 
 //input type, progress type, result type
 public class MyTask extends AsyncTask<String,Integer,Boolean> {
     public static String TAG = MyTask.class.getSimpleName();
     ProgressBar mProgressBar;
-    public MyTask(ProgressBar progressBar) {
-        mProgressBar = progressBar;
+    TextView mTextView;
+
+    public MyTask(ProgressBar progressBar, TextView textView) {
+       mProgressBar = progressBar;
+        mTextView = textView;
     }
 
     @Override
@@ -51,6 +55,8 @@ public class MyTask extends AsyncTask<String,Integer,Boolean> {
         Log.i(TAG,"onProgressUpdate--"+values[0]);
 
         mProgressBar.setProgress(values[0]);
+        mTextView.setText(""+values[0]);
+
 
     }
 
