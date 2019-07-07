@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="enter_name">नाम दर्ज</string>
+    <string name="enter_password">पास वर्ड दर्ज करें</string>
+    <string name="remember_password">पासवर्ड याद रखें</string>
+</resources>
