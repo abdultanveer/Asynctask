@@ -66,4 +66,11 @@ public class MyTask extends AsyncTask<String,Integer,Boolean> {
         mProgressBar.setVisibility(View.GONE);
 
     }
+
+   /* public void add(){
+        Student abdul = new Student();
+        abdul = null;
+
+    }*/
+
 }
