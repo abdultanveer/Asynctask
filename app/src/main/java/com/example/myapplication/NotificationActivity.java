@@ -1,9 +1,13 @@
 package com.example.myapplication;
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.Build;
+import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,12 +30,33 @@ public class NotificationActivity extends AppCompatActivity {
     }
 
     public void showNotification(View view) {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "channelid")
-                .setSmallIcon(R.drawable.ic_launcher_background)
-                .setContentTitle("my title")
-                .setContentText("my content")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-        mNotifyManager.notify(NOTIFICATION_ID, builder.build());
+        switch (view.getId()){
+            case R.id.button:
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "channelid")
+                        .setSmallIcon(R.drawable.ic_launcher_background)
+                        .setContentTitle("my title")
+                        .setContentText("my content")
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                mNotifyManager.notify(NOTIFICATION_ID, builder.build());
+                break;
+            case R.id.button3:
+                Intent dialIntent = new Intent(NotificationActivity.this,MainActivity.class);
+                PendingIntent notifyPendingIntent =
+                        PendingIntent.getActivity(this,007,dialIntent,
+                                PendingIntent.FLAG_UPDATE_CURRENT);
+                AlarmManager alarmManager =
+                        (AlarmManager) getSystemService(ALARM_SERVICE);
+                alarmManager.setInexactRepeating(
+                        AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                        SystemClock.elapsedRealtime()+ 30*1000,//trigger time
+                        AlarmManager.INTERVAL_FIFTEEN_MINUTES, // repeating interval
+                        notifyPendingIntent);
+
+                break;
+        }
+
+
+
 
        /* mNotifyBuilder = new NotificationCompat.Builder(this)
                 .setContentTitle("Notification title")
