@@ -33,7 +33,7 @@ public class DAO {
         Cursor cursor =
                 //database.rawQuery("select * from notes",null);
                 database.query(TodoEntry.TABLE_NAME,null,null,null,null,null,null);
-        cursor.moveToLast();
+        cursor.moveToLast();//move to the last row of the queried result
         int titleIndex = cursor.getColumnIndexOrThrow(TodoEntry.COLUMN_NAME_TITLE);
         int subtitleIndex = cursor.getColumnIndexOrThrow(TodoEntry.COLUMN_NAME_SUBTITLE);
 
@@ -43,9 +43,28 @@ public class DAO {
 
         return title+"\n"+subtitle;
     }
+
+    public  Cursor readRows(){
+    return   database.query(TodoEntry.TABLE_NAME,null,null,null,null,null,null);
+        /*cursor.moveToLast();//move to the last row of the queried result
+        int titleIndex = cursor.getColumnIndexOrThrow(TodoEntry.COLUMN_NAME_TITLE);
+        int subtitleIndex = cursor.getColumnIndexOrThrow(TodoEntry.COLUMN_NAME_SUBTITLE);
+
+        String title = cursor.getString(titleIndex);
+        String subtitle = cursor.getString(subtitleIndex);
+
+
+        return title+"\n"+subtitle;*/
+    }
+
     public void updateRow(){}
     public void deleteRow(){}
 
 
-
+    public void createRow(TodoNote todoNote) {
+        ContentValues values = new ContentValues();
+        values.put(TodoEntry.COLUMN_NAME_TITLE,todoNote.getTitle());
+        values.put(TodoEntry.COLUMN_NAME_SUBTITLE,todoNote.getSubTitle());
+        database.insert(TodoEntry.TABLE_NAME,null,values);
+    }
 }

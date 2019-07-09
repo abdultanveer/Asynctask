@@ -1,18 +1,23 @@
 package com.example.myapplication;
 
 import android.app.Activity;
+import com.example.myapplication.data.TodoContract.TodoEntry;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication.data.DAO;
+import com.example.myapplication.data.TodoNote;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     public static String NAME_KEY = "name";
     public static String PASSWORD_KEY = "pwd";
     public static String RM_PASSWORD_KEY = "rem";
-
+    private SimpleCursorAdapter adapter;
 
 
     public  static  int MODE = Activity.MODE_PRIVATE;
@@ -41,6 +46,17 @@ public class MainActivity extends AppCompatActivity {
         checkBox = findViewById(R.id.checkBox);
         dao = new DAO(this);
         dao.openDb();
+        Cursor dataCursor = dao.readRows();
+         adapter = new SimpleCursorAdapter(this,
+                android.R.layout.simple_list_item_2,
+                dataCursor,
+                new String[]{TodoEntry.COLUMN_NAME_TITLE,TodoEntry.COLUMN_NAME_SUBTITLE},
+                new int[]{android.R.id.text1,android.R.id.text2}, 0 );
+
+
+        ListView dbListView = findViewById(R.id.dbList);
+        dbListView.setAdapter(adapter);
+
 
         //sendSms();
     }
@@ -109,7 +125,11 @@ public class MainActivity extends AppCompatActivity {
                 String title = nameEditText.getText().toString();
                 String subtitle = passwordEditText.getText().toString();
 
-                dao.createRow(title,subtitle);
+                dao.createRow(new TodoNote(title,subtitle));
+                adapter.notifyDataSetChanged();//hey mr adapter new data has been added, plz update listview
+
+                nameEditText.setText("");
+                passwordEditText.setText("");
                 break;
             case R.id.buttonget:
                String result = dao.readRow();
